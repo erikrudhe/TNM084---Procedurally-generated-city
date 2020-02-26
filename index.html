@@ -1,0 +1,83 @@
+<!--PROCEDURALLY GENERATED CITY - Erik Rudhe--> 
+<!--Linköping University (TNM084)-->
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>TNM084 Project</title>
+		<style>
+			body { margin: 0; }
+			canvas { display: block; }
+		</style>
+	</head>
+	<body>
+        <script src="js/three.js"></script>
+        <script src="js/FirstPersonControls.js"></script>
+        <script src="City.js"></script>
+		<script>
+            
+            // Variables decleration
+            var camera, scene, renderer, window, controls, cityGeometry;
+          
+            // Update the time
+            lastTime = performance.now();  
+
+            // Call functions
+            init();
+
+            animate();
+
+            generateCity();
+
+            function init(){
+
+                // Scene setup
+                scene = new THREE.Scene();
+  
+                // Camera setup
+                camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+                camera.position.z = 15;
+                camera.position.y = 250;
+                camera.position.x = -5;
+              
+                // Renderer setup
+                renderer = new THREE.WebGLRenderer({ antialias: true });
+                renderer.setSize( window.innerWidth, window.innerHeight );
+                renderer.setClearColor("#152238")
+
+                document.body.appendChild( renderer.domElement );
+
+                // Resizes the window size 
+                window.addEventListener("resize", ()=>{
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                camera.aspect = window.innerWidth / window.innerHeight;
+
+                camera.updateProjectionMatrix();
+                })
+
+                 // Control setup 
+                 controls = new THREE.FirstPersonControls(camera, renderer.domElement);
+                 controls.lookVertical = true;
+                 controls.movementSpeed = 100.0;
+                 controls.lookSpeed = 0.2;
+                 
+            }
+
+            function animate(){
+
+                requestAnimationFrame( animate );
+
+                var time = performance.now()/1000;
+
+                controls.update(time - lastTime);
+
+                lastTime = time;
+
+                renderer.render( scene, camera );
+
+            }
+
+		</script>
+	</body>
+</html>
