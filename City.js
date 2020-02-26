@@ -64,10 +64,12 @@ function generateCity(){
 
 function cityTexture() {
 
+        // Build the texture
         var texture = new THREE.Texture(buildTexture());
         texture.anisotropy = renderer.getMaxAnisotropy(); 
         texture.needsUpdate = true;
 
+        // Build the mesh for the 
         var material = new THREE.MeshLambertMaterial({
             map: texture,
             vertexColors: THREE.VertexColors
@@ -82,15 +84,17 @@ function cityTexture() {
 
 function buildTexture(){
     
-
+        // Build the canvas
         var canvas = document.createElement('canvas');
         canvas.width = 32;
         canvas.height = 64;
         var context = canvas.getContext('2d');
 
+        // Fill it with black color
         context.fillStyle = '#000000';
         context.fillRect(0,0,32,64);
 
+        // Samll noise function to simulate light variations in each window
         for(var y = 2; y < 64; y +=2){
             for(var x = 1; x < 32; x +=2){
                 var value = Math.floor(Math.random() * Math.random() * 64);
@@ -99,18 +103,20 @@ function buildTexture(){
             }
         }
 
-        var canvas2 = document.createElement('canvas');
-        canvas2.width = 512;
-        canvas2.height = 1024;
-        var context = canvas2.getContext('2d');
+        // Build the bigger canvas
+        var canvasBig = document.createElement('canvas');
+        canvasBig.width = 512;
+        canvasBig.height = 1024;
+        var context = canvasBig.getContext('2d');
 
+        // Disable smoothing to reduce blurry
         context.imageSmoothingEnabled = false;
         context.webkitImageSmoothingEnabled = false;
         context.mozImageSmoothingEnabled = false;
 
-        context.drawImage(canvas, 0, 0, canvas2.width, canvas2.height);
+        context.drawImage(canvas, 0, 0, canvasBig.width, canvasBig.height);
 
-        return canvas2; 
+        return canvasBig; 
 
     }
 
