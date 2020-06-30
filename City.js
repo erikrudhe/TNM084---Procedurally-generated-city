@@ -3,6 +3,7 @@ function generateCity(){
 
     clearScene();
 
+    numberOfBuildings = document.getElementById('density-slider').value;
     // Add Light 
     var hemLight = new THREE.HemisphereLight(0xfffff0, 0x101020, 5.25);
     hemLight.position.set(0.75, 1, 0.25);
@@ -39,22 +40,24 @@ function generateCity(){
     var buildingMesh = new THREE.Mesh(boxGeometry);
     cityGeometry = new THREE.Geometry();
  
-    for(var i = 0; i < 750; i ++){
+    Math.seed = 1;
+    for(var i = 0; i < numberOfBuildings; i ++){
         
           // Position of building
-          buildingMesh.position.x = Math.floor( Math.random() * 200 - 100 ) * 10;
-          buildingMesh.position.z = Math.floor( Math.random() * 200 - 100 ) * 10;    
+          buildingMesh.position.x = Math.floor( Math.seededRandom() * 200 - 100 ) * 10;
+          buildingMesh.position.z = Math.floor( Math.seededRandom() * 200 - 100 ) * 10;    
         
           // Scale and size buildings
-          buildingMesh.scale.x  = Math.random() *Math.random() * Math.random()* Math.random() * 40 + 40;
+          buildingMesh.scale.x  = Math.seededRandom() *Math.seededRandom() * Math.seededRandom()* Math.seededRandom() * 40 + 40;
           buildingMesh.scale.z  = buildingMesh.scale.x
          
           // Height
-          buildingMesh.scale.y  = (Math.random()  * buildingMesh.scale.x) * 8 + 8;
+          maxHeight = document.getElementById('height-slider').value;
+          buildingMesh.scale.y = (Math.seededRandom() * maxHeight) + maxHeight / 1.4;
         
           // Merge with cityGeometry
           buildingMesh.updateMatrix();
-          //cityGeometry.merge(buildingMesh.boxGeometry, buildingMesh.matrix);
+          // cityGeometry.merge(buildingMesh.boxGeometry, buildingMesh.matrix);
          THREE.GeometryUtils.merge(cityGeometry, buildingMesh)
     }
 
@@ -63,6 +66,8 @@ function generateCity(){
 }
 
 function cityTexture() {
+
+        windowApperance = document.getElementById("window-slider").value
 
         // Build the texture
         var texture = new THREE.Texture(buildTexture());
@@ -84,6 +89,8 @@ function cityTexture() {
 
 function buildTexture(){
     
+        var windowApperance = value
+
         // Build the canvas
         var canvas = document.createElement('canvas');
         canvas.width = 32;
